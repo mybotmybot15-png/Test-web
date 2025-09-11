@@ -46,7 +46,6 @@
             background-position: center;
             position: relative;
             min-height: 100vh;
-            padding-left: 70px; /* Space for the side menu */
         }
 
         body::before {
@@ -78,15 +77,15 @@
 
         .header-content {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            gap: 15px;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
             animation: fadeInDown 1s ease;
-            flex-direction: row-reverse;
         }
 
         .logo {
@@ -96,7 +95,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 10px;
+            margin-right: 10px;
             overflow: hidden;
         }
 
@@ -107,7 +106,7 @@
         }
 
         .site-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
         }
@@ -118,9 +117,8 @@
 
         /* Search Bar */
         .search-container {
-            flex: 1;
+            width: 100%;
             max-width: 500px;
-            margin: 0 20px;
             position: relative;
         }
 
@@ -227,7 +225,9 @@
         }
 
         .side-menu.active {
-            left: 70px;
+            left: 0;
+            width: 50%;
+            max-width: 280px;
         }
 
         .side-menu-toggle {
@@ -619,13 +619,8 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            body {
-                padding-left: 0;
-            }
-            
             .side-menu.active {
-                left: 0;
-                width: 100%;
+                width: 80%;
             }
             
             .header-content {
@@ -660,6 +655,12 @@
             }
         }
     </style>
+    <!-- Firebase App (core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </head>
 <body>
     <!-- Side Menu Toggle -->
@@ -717,15 +718,15 @@
     <!-- Header -->
     <header>
         <div class="container header-content">
-            <div class="search-container">
-                <input type="text" class="search-box" id="search-box" placeholder="Search for movies...">
-            </div>
-            
             <div class="logo-container">
                 <div class="logo">
                     <img src="https://cdn-icons-png.flaticon.com/512/3033/3033143.png" alt="AK Creations Logo">
                 </div>
                 <div class="site-title">AK <span>CREATION</span> MOVIES</div>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" id="search-box" placeholder="Search for movies...">
             </div>
         </div>
     </header>
@@ -850,110 +851,25 @@
         <div class="container footer-content">
             <div class="footer-logo">AK <span>CREATIONS</span></div>
             <p>Your ultimate destination for movies</p>
-            <p class="copyright">© 2023 AK Creations. All rights reserved.</p>
+            <p class="copyright">© 2025 AK Creations. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Movie data with categories
-        let movies = [
-            {
-                id: 1,
-                title: "The Dark Knight",
-                year: 2008,
-                genre: "Action, Crime, Drama",
-                duration: "2h 32m",
-                rating: "9.0/10",
-                poster: "https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-                category: "all",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/EXeTwQWrcwY"
-            },
-            {
-                id: 2,
-                title: "Inception",
-                year: 2010,
-                genre: "Action, Adventure, Sci-Fi",
-                duration: "2h 28m",
-                rating: "8.8/10",
-                poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
-                category: "all",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/8hP9D6kZseM"
-            },
-            {
-                id: 3,
-                title: "Interstellar",
-                year: 2014,
-                genre: "Adventure, Drama, Sci-Fi",
-                duration: "2h 49m",
-                rating: "8.6/10",
-                poster: "https://images.unsplash.com/photo-1596727147705-61a532a659bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-                category: "all",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/zSWdZVtXT7E"
-            },
-            {
-                id: 4,
-                title: "Avatar",
-                year: 2009,
-                genre: "Action, Adventure, Fantasy",
-                duration: "2h 42m",
-                rating: "7.8/10",
-                poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
-                category: "sinhala-dubbed",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/5PSNL1qE6VY"
-            },
-            {
-                id: 5,
-                title: "Jurassic World",
-                year: 2015,
-                genre: "Action, Adventure, Sci-Fi",
-                duration: "2h 4m",
-                rating: "7.0/10",
-                poster: "https://images.unsplash.com/photo-1596727147705-61a532a659bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "A new theme park, built on the original site of Jurassic Park, creates a genetically modified hybrid dinosaur, the Indominus Rex, which escapes containment and goes on a killing spree.",
-                category: "sinhala-sub",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/RFinNxS5KN4"
-            },
-            {
-                id: 6,
-                title: "Mad Max: Fury Road",
-                year: 2015,
-                genre: "Action, Adventure, Sci-Fi",
-                duration: "2h",
-                rating: "8.1/10",
-                poster: "https://images.unsplash.com/photo-1585951236318-7bdb3e0a7c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
-                category: "no-sub",
-                downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
-                ],
-                watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
-            }
-        ];
+        // Firebase configuration - Replace with your actual Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJvhynXWckxxc_BharW2uQafxuYimHeaA",
+            authDomain: "ak-creation-movies.firebaseapp.com",
+            projectId: "ak-creation-movies",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "1051932486763",
+            appId: "1:1051932486763:web:4c1144ca5051b74eff152e"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
         // DOM Elements
         const moviesGrid = document.getElementById('movies-grid');
@@ -979,16 +895,13 @@
 
         // Current category state
         let currentCategory = 'all';
-        let filteredMovies = [...movies];
+        let filteredMovies = [];
         let isLoggedIn = false;
 
-        // Initialize from localStorage
-        function initializeFromStorage() {
-            // Load movies from localStorage
-            const storedMovies = localStorage.getItem('akMovies');
-            if (storedMovies) {
-                movies = JSON.parse(storedMovies);
-            }
+        // Initialize from Firebase
+        function initializeFromFirebase() {
+            // Load movies from Firebase
+            loadMovies();
             
             // Load theme from localStorage
             const savedTheme = localStorage.getItem('theme');
@@ -1004,9 +917,26 @@
                 logoutBtn.style.display = 'block';
                 loginBtn.style.display = 'none';
             }
+        }
+
+        // Load movies from Firebase
+        function loadMovies() {
+            moviesGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: white; font-size: 18px;">Loading movies...</p>';
             
-            filteredMovies = filterMoviesByCategory(currentCategory);
-            generateMovieCards(filteredMovies);
+            db.collection("movies").get()
+            .then((querySnapshot) => {
+                const movies = [];
+                querySnapshot.forEach((doc) => {
+                    movies.push({ id: doc.id, ...doc.data() });
+                });
+                
+                filteredMovies = filterMoviesByCategory(currentCategory, movies);
+                generateMovieCards(filteredMovies);
+            })
+            .catch((error) => {
+                console.error("Error loading movies: ", error);
+                moviesGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: white; font-size: 18px;">Error loading movies. Please try again later.</p>';
+            });
         }
 
         // Generate movie cards
@@ -1031,20 +961,20 @@
         }
 
         // Filter movies by category
-        function filterMoviesByCategory(category) {
+        function filterMoviesByCategory(category, moviesList) {
             if (category === 'all') {
-                return movies;
+                return moviesList;
             }
-            return movies.filter(movie => movie.category === category);
+            return moviesList.filter(movie => movie.category === category);
         }
 
         // Filter movies by search term
-        function filterMoviesBySearch(term) {
+        function filterMoviesBySearch(term, moviesList) {
             if (!term) {
-                return filterMoviesByCategory(currentCategory);
+                return filterMoviesByCategory(currentCategory, moviesList);
             }
             
-            return movies.filter(movie => 
+            return moviesList.filter(movie => 
                 movie.title.toLowerCase().includes(term.toLowerCase()) || 
                 movie.description.toLowerCase().includes(term.toLowerCase()) ||
                 movie.genre.toLowerCase().includes(term.toLowerCase())
@@ -1163,10 +1093,10 @@
             adminPanel.style.display = 'none';
         }
 
-        // Add new movie
+        // Add new movie to Firebase
         function addNewMovie(movieData) {
-            const newMovie = {
-                id: movies.length + 1,
+            // Add a new movie to the Firebase database
+            db.collection("movies").add({
                 title: movieData.title,
                 year: parseInt(movieData.year),
                 genre: movieData.genre,
@@ -1178,20 +1108,22 @@
                 downloadLinks: movieData.downloadLink2 ? 
                     [movieData.downloadLink1, movieData.downloadLink2] : 
                     [movieData.downloadLink1],
-                watchLink: movieData.watchLink
-            };
-            
-            movies.unshift(newMovie); // Add to beginning of array
-            localStorage.setItem('akMovies', JSON.stringify(movies));
-            
-            // Update display
-            filteredMovies = filterMoviesByCategory(currentCategory);
-            generateMovieCards(filteredMovies);
-            
-            // Reset form
-            adminForm.reset();
-            
-            alert('Movie added successfully!');
+                watchLink: movieData.watchLink,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                // Reset form
+                adminForm.reset();
+                
+                // Reload movies
+                loadMovies();
+                
+                alert('Movie added successfully!');
+            })
+            .catch((error) => {
+                console.error("Error adding movie: ", error);
+                alert('Error adding movie. Please try again.');
+            });
         }
 
         // Event listeners
@@ -1208,8 +1140,21 @@
         // Search functionality
         searchBox.addEventListener('input', (e) => {
             const searchTerm = e.target.value;
-            filteredMovies = filterMoviesBySearch(searchTerm);
-            generateMovieCards(filteredMovies);
+            
+            // Get movies from Firebase and filter
+            db.collection("movies").get()
+            .then((querySnapshot) => {
+                const movies = [];
+                querySnapshot.forEach((doc) => {
+                    movies.push({ id: doc.id, ...doc.data() });
+                });
+                
+                filteredMovies = filterMoviesBySearch(searchTerm, movies);
+                generateMovieCards(filteredMovies);
+            })
+            .catch((error) => {
+                console.error("Error searching movies: ", error);
+            });
         });
 
         // Login form submission
@@ -1249,13 +1194,26 @@
                 tab.classList.add('active');
                 
                 currentCategory = tab.getAttribute('data-category');
-                filteredMovies = filterMoviesByCategory(currentCategory);
-                generateMovieCards(filteredMovies);
+                
+                // Get movies from Firebase and filter by category
+                db.collection("movies").get()
+                .then((querySnapshot) => {
+                    const movies = [];
+                    querySnapshot.forEach((doc) => {
+                        movies.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    filteredMovies = filterMoviesByCategory(currentCategory, movies);
+                    generateMovieCards(filteredMovies);
+                })
+                .catch((error) => {
+                    console.error("Error loading movies: ", error);
+                });
             });
         });
 
         // Initialize
-        initializeFromStorage();
+        initializeFromFirebase();
 
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
@@ -1268,4 +1226,4 @@
         });
     </script>
 </body>
-  </html>
+    </html>
