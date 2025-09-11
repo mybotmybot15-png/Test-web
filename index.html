@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK CREATION MOVIES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e50914;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --bg-color: #fff;
+            --card-bg: #f8f8f8;
+            --header-bg: rgba(0, 0, 0, 0.85);
+            --footer-bg: #222;
+            --transition: all 0.3s ease;
+            --side-menu-width: 280px;
+        }
+
+        .dark-theme {
+            --primary-color: #e50914;
+            --secondary-color: #2c2c2c;
+            --text-color: #f5f5f5;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(0, 0, 0, 0.95);
+            --footer-bg: #000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: url('https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            position: relative;
+            min-height: 100vh;
+            padding-left: 70px; /* Space for the side menu */
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            animation: fadeInDown 1s ease;
+            flex-direction: row-reverse;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .site-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .site-title span {
+            color: var(--primary-color);
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+        }
+
+        /* Navigation Tabs */
+        .tabs-container {
+            margin: 20px 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs {
+            display: inline-flex;
+            gap: 10px;
+            padding: 5px 0;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            color: white;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .tab.active, .tab:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.3);
+        }
+
+        /* Movies Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .movie-title {
+            padding: 15px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: var(--side-menu-width);
+            height: 100vh;
+            background: var(--card-bg);
+            z-index: 102;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .side-menu.active {
+            left: 70px;
+        }
+
+        .side-menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .side-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .side-menu-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: rgba(229, 9, 20, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .side-menu-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-buttons {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-btn {
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-btn.youtube {
+            background: #FF0000;
+        }
+
+        .social-btn.tiktok {
+            background: #000000;
+        }
+
+        .social-btn.website {
+            background: #4285F4;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .admin-btn {
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            grid-column: 1 / -1;
+        }
+
+        .admin-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 104;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .login-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .login-content {
+            background: var(--bg-color);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 30px;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .login-modal.active .login-content {
+            transform: scale(1);
+        }
+
+        .login-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-btn {
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Movie Detail Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 103;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .modal-poster {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .modal-info {
+            margin-bottom: 20px;
+            color: #777;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .download-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .watch-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .watch-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+        }
+
+        .watch-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .watch-iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--footer-bg);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo span {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-left: 0;
+            }
+            
+            .side-menu.active {
+                left: 0;
+                width: 100%;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin: 15px 0;
+            }
+            
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .modal-content, .login-content {
+                width: 95%;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .admin-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .watch-iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Menu Toggle -->
+    <div class="side-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="side-menu-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="side-menu-item">Request Movie</div>
+        <div class="side-menu-item" id="media-item">Media</div>
+        <div class="side-menu-item" id="theme-toggle">Change Theme</div>
+        <div class="side-menu-item" id="login-btn">Login</div>
+        <div class="side-menu-item" id="admin-panel-btn" style="display: none;">Admin Panel</div>
+        <div class="side-menu-item" id="logout-btn" style="display: none;">Logout</div>
+        
+        <div class="social-buttons" id="social-buttons">
+            <a href="#" class="social-btn youtube">
+                <i class="fab fa-youtube"></i> YouTube
+            </a>
+            <a href="#" class="social-btn tiktok">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="#" class="social-btn website">
+                <i class="fas fa-globe"></i> Website
+            </a>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal">
+        <div class="login-content">
+            <div class="login-close">
+                <i class="fas fa-times"></i>
+            </div>
+            <h2 class="login-title">Admin Login</h2>
+            <form class="login-form" id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p id="login-message" style="text-align: center; margin-top: 15px; color: var(--primary-color);"></p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="search-container">
+                <input type="text" class="search-box" id="search-box" placeholder="Search for movies...">
+            </div>
+            
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3033/3033143.png" alt="AK Creations Logo">
+                </div>
+                <div class="site-title">AK <span>CREATION</span> MOVIES</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="admin-panel">
+            <h2 class="admin-title">Admin Panel - Add New Movie</h2>
+            <form class="admin-form" id="admin-form">
+                <div class="form-group">
+                    <label for="movie-title">Movie Title</label>
+                    <input type="text" id="movie-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="movie-year">Year</label>
+                    <input type="number" id="movie-year" required>
+                </div>
+                <div class="form-group">
+                    <label for="movie-genre">Genre</label>
+                    <input type="text" id="movie-genre" required>
+                </div>
+                <div class="form-group">
+                    <label for="movie-duration">Duration</label>
+                    <input type="text" id="movie-duration" required>
+                </div>
+                <div class="form-group">
+                    <label for="movie-rating">Rating</label>
+                    <input type="text" id="movie-rating" required>
+                </div>
+                <div class="form-group">
+                    <label for="movie-category">Category</label>
+                    <select id="movie-category" required>
+                        <option value="all">All</option>
+                        <option value="sinhala-dubbed">Sinhala Dubbed</option>
+                        <option value="sinhala-sub">With Sinhala Sub</option>
+                        <option value="no-sub">Without Sub</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="movie-poster">Poster URL</label>
+                    <input type="url" id="movie-poster" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="movie-description">Description</label>
+                    <textarea id="movie-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="download-link1">Download Link 1</label>
+                    <input type="url" id="download-link1" required>
+                </div>
+                <div class="form-group">
+                    <label for="download-link2">Download Link 2</label>
+                    <input type="url" id="download-link2">
+                </div>
+                <div class="form-group full-width">
+                    <label for="watch-link">Online Watch Link (Embed URL)</label>
+                    <input type="url" id="watch-link" required>
+                    <small>Example: https://www.youtube.com/embed/VIDEO_ID</small>
+                </div>
+                <button type="submit" class="admin-btn">Add Movie</button>
+            </form>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" data-category="all">HOME</div>
+                <div class="tab" data-category="sinhala-dubbed">SINHALA DUBBED</div>
+                <div class="tab" data-category="sinhala-sub">WITH SINHALA SUB</div>
+                <div class="tab" data-category="no-sub">WITHOUT SUB</div>
+            </div>
+        </div>
+
+        <!-- Movies Grid -->
+        <div class="movies-grid" id="movies-grid">
+            <!-- Movie cards will be dynamically generated here -->
+        </div>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-close">
+                    <i class="fas fa-times"></i>
+                </div>
+                <img src="" alt="Movie Poster" class="modal-poster" id="modal-poster">
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modal-title">Movie Title</h2>
+                <div class="modal-info" id="modal-info">
+                    <p>Year: 2023</p>
+                    <p>Genre: Action, Adventure</p>
+                    <p>Duration: 2h 15m</p>
+                    <p>Rating: 8.5/10</p>
+                </div>
+                <p id="modal-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                
+                <div class="modal-actions">
+                    <button class="action-btn download-btn" id="download-btn-1">
+                        <i class="fas fa-download"></i> Download 1
+                    </button>
+                    <button class="action-btn download-btn" id="download-btn-2">
+                        <i class="fas fa-download"></i> Download 2
+                    </button>
+                    <button class="action-btn watch-btn" id="watch-btn">
+                        <i class="fas fa-play"></i> Watch Online
+                    </button>
+                </div>
+                
+                <div class="watch-box" id="watch-box" style="display: none;">
+                    <h3 class="watch-title">Watch Online</h3>
+                    <iframe src="" class="watch-iframe" id="watch-iframe" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">AK <span>CREATIONS</span></div>
+            <p>Your ultimate destination for movies</p>
+            <p class="copyright">© 2023 AK Creations. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Movie data with categories
+        let movies = [
+            {
+                id: 1,
+                title: "The Dark Knight",
+                year: 2008,
+                genre: "Action, Crime, Drama",
+                duration: "2h 32m",
+                rating: "9.0/10",
+                poster: "https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+                category: "all",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/EXeTwQWrcwY"
+            },
+            {
+                id: 2,
+                title: "Inception",
+                year: 2010,
+                genre: "Action, Adventure, Sci-Fi",
+                duration: "2h 28m",
+                rating: "8.8/10",
+                poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+                category: "all",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/8hP9D6kZseM"
+            },
+            {
+                id: 3,
+                title: "Interstellar",
+                year: 2014,
+                genre: "Adventure, Drama, Sci-Fi",
+                duration: "2h 49m",
+                rating: "8.6/10",
+                poster: "https://images.unsplash.com/photo-1596727147705-61a532a659bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+                category: "all",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/zSWdZVtXT7E"
+            },
+            {
+                id: 4,
+                title: "Avatar",
+                year: 2009,
+                genre: "Action, Adventure, Fantasy",
+                duration: "2h 42m",
+                rating: "7.8/10",
+                poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+                category: "sinhala-dubbed",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/5PSNL1qE6VY"
+            },
+            {
+                id: 5,
+                title: "Jurassic World",
+                year: 2015,
+                genre: "Action, Adventure, Sci-Fi",
+                duration: "2h 4m",
+                rating: "7.0/10",
+                poster: "https://images.unsplash.com/photo-1596727147705-61a532a659bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "A new theme park, built on the original site of Jurassic Park, creates a genetically modified hybrid dinosaur, the Indominus Rex, which escapes containment and goes on a killing spree.",
+                category: "sinhala-sub",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/RFinNxS5KN4"
+            },
+            {
+                id: 6,
+                title: "Mad Max: Fury Road",
+                year: 2015,
+                genre: "Action, Adventure, Sci-Fi",
+                duration: "2h",
+                rating: "8.1/10",
+                poster: "https://images.unsplash.com/photo-1585951236318-7bdb3e0a7c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
+                category: "no-sub",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
+            }
+        ];
+
+        // DOM Elements
+        const moviesGrid = document.getElementById('movies-grid');
+        const modal = document.querySelector('.modal');
+        const modalClose = document.querySelector('.modal-close');
+        const sideMenuToggle = document.querySelector('.side-menu-toggle');
+        const sideMenu = document.querySelector('.side-menu');
+        const sideMenuClose = document.querySelector('.side-menu-close');
+        const themeToggle = document.getElementById('theme-toggle');
+        const tabs = document.querySelectorAll('.tab');
+        const searchBox = document.getElementById('search-box');
+        const loginModal = document.querySelector('.login-modal');
+        const loginClose = document.querySelector('.login-close');
+        const loginBtn = document.getElementById('login-btn');
+        const loginForm = document.getElementById('login-form');
+        const loginMessage = document.getElementById('login-message');
+        const mediaItem = document.getElementById('media-item');
+        const socialButtons = document.getElementById('social-buttons');
+        const adminPanelBtn = document.getElementById('admin-panel-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const adminPanel = document.getElementById('admin-panel');
+        const adminForm = document.getElementById('admin-form');
+
+        // Current category state
+        let currentCategory = 'all';
+        let filteredMovies = [...movies];
+        let isLoggedIn = false;
+
+        // Initialize from localStorage
+        function initializeFromStorage() {
+            // Load movies from localStorage
+            const storedMovies = localStorage.getItem('akMovies');
+            if (storedMovies) {
+                movies = JSON.parse(storedMovies);
+            }
+            
+            // Load theme from localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+            
+            // Check if user is logged in
+            const loggedIn = localStorage.getItem('isLoggedIn');
+            if (loggedIn === 'true') {
+                isLoggedIn = true;
+                adminPanelBtn.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                loginBtn.style.display = 'none';
+            }
+            
+            filteredMovies = filterMoviesByCategory(currentCategory);
+            generateMovieCards(filteredMovies);
+        }
+
+        // Generate movie cards
+        function generateMovieCards(moviesToShow) {
+            moviesGrid.innerHTML = '';
+            
+            if (moviesToShow.length === 0) {
+                moviesGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: white; font-size: 18px;">No movies found</p>';
+                return;
+            }
+            
+            moviesToShow.forEach(movie => {
+                const movieCard = document.createElement('div');
+                movieCard.classList.add('movie-card');
+                movieCard.innerHTML = `
+                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                    <div class="movie-title">${movie.title}</div>
+                `;
+                movieCard.addEventListener('click', () => openMovieModal(movie));
+                moviesGrid.appendChild(movieCard);
+            });
+        }
+
+        // Filter movies by category
+        function filterMoviesByCategory(category) {
+            if (category === 'all') {
+                return movies;
+            }
+            return movies.filter(movie => movie.category === category);
+        }
+
+        // Filter movies by search term
+        function filterMoviesBySearch(term) {
+            if (!term) {
+                return filterMoviesByCategory(currentCategory);
+            }
+            
+            return movies.filter(movie => 
+                movie.title.toLowerCase().includes(term.toLowerCase()) || 
+                movie.description.toLowerCase().includes(term.toLowerCase()) ||
+                movie.genre.toLowerCase().includes(term.toLowerCase())
+            );
+        }
+
+        // Open movie modal
+        function openMovieModal(movie) {
+            const modalPoster = document.getElementById('modal-poster');
+            const modalTitle = document.getElementById('modal-title');
+            const modalInfo = document.getElementById('modal-info');
+            const modalDescription = document.getElementById('modal-description');
+            const downloadBtn1 = document.getElementById('download-btn-1');
+            const downloadBtn2 = document.getElementById('download-btn-2');
+            const watchBtn = document.getElementById('watch-btn');
+            const watchBox = document.getElementById('watch-box');
+            const watchIframe = document.getElementById('watch-iframe');
+            
+            modalPoster.src = movie.poster;
+            modalTitle.textContent = movie.title;
+            modalInfo.innerHTML = `
+                <p>Year: ${movie.year}</p>
+                <p>Genre: ${movie.genre}</p>
+                <p>Duration: ${movie.duration}</p>
+                <p>Rating: ${movie.rating}</p>
+            `;
+            
+            modalDescription.textContent = movie.description;
+            
+            // Set download links
+            downloadBtn1.onclick = () => window.open(movie.downloadLinks[0], '_blank');
+            if (movie.downloadLinks[1]) {
+                downloadBtn2.style.display = 'flex';
+                downloadBtn2.onclick = () => window.open(movie.downloadLinks[1], '_blank');
+            } else {
+                downloadBtn2.style.display = 'none';
+            }
+            
+            // Set watch functionality
+            watchBtn.onclick = () => {
+                watchIframe.src = movie.watchLink;
+                watchBox.style.display = 'block';
+            };
+            
+            watchBox.style.display = 'none';
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const watchBox = document.getElementById('watch-box');
+            const watchIframe = document.getElementById('watch-iframe');
+            
+            watchBox.style.display = 'none';
+            watchIframe.src = '';
+            
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Toggle side menu
+        function toggleSideMenu() {
+            sideMenu.classList.toggle('active');
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Toggle social buttons
+        function toggleSocialButtons() {
+            socialButtons.style.display = socialButtons.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Toggle admin panel
+        function toggleAdminPanel() {
+            adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Login function
+        function login(username, password) {
+            if (username === 'akcreation' && password === 'ak@1234@creation') {
+                loginMessage.textContent = 'Login successful!';
+                loginMessage.style.color = 'green';
+                
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                setTimeout(() => {
+                    loginModal.classList.remove('active');
+                    adminPanelBtn.style.display = 'block';
+                    logoutBtn.style.display = 'block';
+                    loginBtn.style.display = 'none';
+                }, 1000);
+                
+                return true;
+            } else {
+                loginMessage.textContent = 'Invalid username or password!';
+                loginMessage.style.color = 'var(--primary-color)';
+                return false;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            adminPanelBtn.style.display = 'none';
+            logoutBtn.style.display = 'none';
+            loginBtn.style.display = 'block';
+            adminPanel.style.display = 'none';
+        }
+
+        // Add new movie
+        function addNewMovie(movieData) {
+            const newMovie = {
+                id: movies.length + 1,
+                title: movieData.title,
+                year: parseInt(movieData.year),
+                genre: movieData.genre,
+                duration: movieData.duration,
+                rating: movieData.rating,
+                poster: movieData.poster,
+                description: movieData.description,
+                category: movieData.category,
+                downloadLinks: movieData.downloadLink2 ? 
+                    [movieData.downloadLink1, movieData.downloadLink2] : 
+                    [movieData.downloadLink1],
+                watchLink: movieData.watchLink
+            };
+            
+            movies.unshift(newMovie); // Add to beginning of array
+            localStorage.setItem('akMovies', JSON.stringify(movies));
+            
+            // Update display
+            filteredMovies = filterMoviesByCategory(currentCategory);
+            generateMovieCards(filteredMovies);
+            
+            // Reset form
+            adminForm.reset();
+            
+            alert('Movie added successfully!');
+        }
+
+        // Event listeners
+        modalClose.addEventListener('click', closeModal);
+        sideMenuToggle.addEventListener('click', toggleSideMenu);
+        sideMenuClose.addEventListener('click', toggleSideMenu);
+        themeToggle.addEventListener('click', toggleTheme);
+        loginBtn.addEventListener('click', () => loginModal.classList.add('active'));
+        loginClose.addEventListener('click', () => loginModal.classList.remove('active'));
+        mediaItem.addEventListener('click', toggleSocialButtons);
+        adminPanelBtn.addEventListener('click', toggleAdminPanel);
+        logoutBtn.addEventListener('click', logout);
+
+        // Search functionality
+        searchBox.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            filteredMovies = filterMoviesBySearch(searchTerm);
+            generateMovieCards(filteredMovies);
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            login(username, password);
+        });
+
+        // Admin form submission
+        adminForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const movieData = {
+                title: document.getElementById('movie-title').value,
+                year: document.getElementById('movie-year').value,
+                genre: document.getElementById('movie-genre').value,
+                duration: document.getElementById('movie-duration').value,
+                rating: document.getElementById('movie-rating').value,
+                poster: document.getElementById('movie-poster').value,
+                description: document.getElementById('movie-description').value,
+                category: document.getElementById('movie-category').value,
+                downloadLink1: document.getElementById('download-link1').value,
+                downloadLink2: document.getElementById('download-link2').value,
+                watchLink: document.getElementById('watch-link').value
+            };
+            
+            addNewMovie(movieData);
+        });
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                currentCategory = tab.getAttribute('data-category');
+                filteredMovies = filterMoviesByCategory(currentCategory);
+                generateMovieCards(filteredMovies);
+            });
+        });
+
+        // Initialize
+        initializeFromStorage();
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+  </html>
