@@ -470,35 +470,6 @@
             border-radius: 8px;
         }
 
-        /* Video player styling */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .video-player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Loading indicator */
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 18px;
-        }
-
         /* Footer */
         footer {
             background: var(--footer-bg);
@@ -598,7 +569,7 @@
                 flex-direction: column;
             }
             
-            .watch-iframe, .video-container {
+            .watch-iframe {
                 height: 250px;
             }
         }
@@ -694,6 +665,9 @@
                     <button class="action-btn download-btn" id="download-btn-2">
                         <i class="fas fa-download"></i> 720P
                     </button>
+                    <button class="action-btn download-btn" id="download-btn-3">
+                        <i class="fas fa-download"></i> 480P
+                    </button>
                     <button class="action-btn watch-btn" id="watch-btn">
                         <i class="fas fa-play"></i> Watch Online
                     </button>
@@ -701,10 +675,7 @@
                 
                 <div class="watch-box" id="watch-box" style="display: none;">
                     <h3 class="watch-title">Watch Online</h3>
-                    <div class="video-container" id="video-container">
-                        <div class="loading" id="video-loading">Loading video...</div>
-                        <video class="video-player" id="video-player" controls></video>
-                    </div>
+                    <iframe src="" class="watch-iframe" id="watch-iframe" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -724,13 +695,13 @@
         const movies = [
             {
                 id: 1,
-                title: "Sonic The Hedgehog 2 Sinhala Dubbed",
+                title: "Sonic The Hedgehog Sinhala Dubbed",
                 year: 2022,
                 genre: "Action, Adventure, Animation",
                 duration: "2h 2m",
                 rating: "6.5/10",
                 poster: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiywYP9K4jhb88M93yokLVUuJv6z4p21VPdFAMxUgrFQWXlKPecMkjLP-zkruoKBgd3lBM0O9xytCaqBYc95aPDkocJKzij3YIn-Y3AdM4tejnnhtSrzF3lMPrGwhGTIbBOfkq6KHfQZQ7Kdat9Qy-ssK3TNzR53McD1l2-LxQ0SYV1XKbszd4cS9S4/s1280/sonic%202%20sinhala%20dubbed-min.png",
-                description: "Sonic the Hedgehog බලපු හැමෝම බලාගෙන හිටියේ ඒකේ දෙවෙනි කොටස එනකල් සුපුරුදු පරිදිම ලොකු ප්‍රේක්ෂක ආකර්ෂණයක් දිනාගන්න මේ චිත්‍රපටිය නිකුත් කරන්න කලින්ම පුළුවන් වුනා. ඒක තවත් වැඩි වුනා. මේක නරඹන්න පටන් ගත්තාම. ලෝකේ පුරාම මේ වෙනකොට ප්‍රදර්ශනය ආරම්භ කරලා මාසයක් විතර වුනත්. ආදායම ඩොලර් මිලියන 350කට ආසන්නයි කියලායි සඳහන් වෙන්නේ. රේටිං අතින් ගත්තාමත්, මේ ලිපිය ලියන කොට, IMDB 6.7, Rotten Tomatoes 68%, Metacritic 45%, Google Users 96% ලබාගෙන තිබ්බා.",
+                description: "SINHALA DUBBED",
                 category: "sinhala-dubbed",
                 downloadLinks: [
                     "https://cloud.sinhalachr.workers.dev/14:/Sonic_the_Hedgehog_2_2022_1080p_WEBRip_pupilvideo_blogspot_com.mp4"
@@ -749,9 +720,10 @@
                 category: "sinhala-sub",
                 downloadLinks: [
                     "https://example.com/download1",
-                    "https://example.com/download2"
+                    "https://example.com/download2",
+                    "https://example.com/download3"
                 ],
-                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                watchLink: "https://www.youtube.com/embed/RFinNxS5KN4"
             },
             {
                 id: 3,
@@ -765,9 +737,10 @@
                 category: "no-sub",
                 downloadLinks: [
                     "https://example.com/download1",
-                    "https://example.com/download2"
+                    "https://example.com/download2",
+                    "https://example.com/download3"
                 ],
-                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+                watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
             },
             {
                 id: 4,
@@ -781,9 +754,10 @@
                 category: "sinhala-sub",
                 downloadLinks: [
                     "https://example.com/download1",
-                    "https://example.com/download2"
+                    "https://example.com/download2",
+                    "https://example.com/download3"
                 ],
-                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                watchLink: "https://www.youtube.com/embed/EXeTwQWrcwY"
             },
             {
                 id: 5,
@@ -797,9 +771,10 @@
                 category: "no-sub",
                 downloadLinks: [
                     "https://example.com/download1",
-                    "https://example.com/download2"
+                    "https://example.com/download2",
+                    "https://example.com/download3"
                 ],
-                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+                watchLink: "https://www.youtube.com/embed/YoHD9XEInc0"
             },
             {
                 id: 6,
@@ -813,9 +788,10 @@
                 category: "sinhala-dubbed",
                 downloadLinks: [
                     "https://example.com/download1",
-                    "https://example.com/download2"
+                    "https://example.com/download2",
+                    "https://example.com/download3"
                 ],
-                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+                watchLink: "https://www.youtube.com/embed/TcMBFSGVi1c"
             }
         ];
 
@@ -832,13 +808,10 @@
         const mediaItem = document.getElementById('media-item');
         const socialButtons = document.getElementById('social-buttons');
         const requestMovie = document.getElementById('request-movie');
-        const videoPlayer = document.getElementById('video-player');
-        const videoLoading = document.getElementById('video-loading');
 
         // Current category state
         let currentCategory = 'all';
         let filteredMovies = [...movies];
-        let currentMovie = null;
 
         // Initialize
         function initialize() {
@@ -899,15 +872,16 @@
 
         // Open movie modal
         function openMovieModal(movie) {
-            currentMovie = movie;
             const modalPoster = document.getElementById('modal-poster');
             const modalTitle = document.getElementById('modal-title');
             const modalInfo = document.getElementById('modal-info');
             const modalDescription = document.getElementById('modal-description');
             const downloadBtn1 = document.getElementById('download-btn-1');
             const downloadBtn2 = document.getElementById('download-btn-2');
+            const downloadBtn3 = document.getElementById('download-btn-3');
             const watchBtn = document.getElementById('watch-btn');
             const watchBox = document.getElementById('watch-box');
+            const watchIframe = document.getElementById('watch-iframe');
             
             modalPoster.src = movie.poster;
             modalTitle.textContent = movie.title;
@@ -922,6 +896,7 @@
             
             // Set download links
             downloadBtn1.onclick = () => window.open(movie.downloadLinks[0], '_blank');
+            
             if (movie.downloadLinks[1]) {
                 downloadBtn2.style.display = 'flex';
                 downloadBtn2.onclick = () => window.open(movie.downloadLinks[1], '_blank');
@@ -929,9 +904,17 @@
                 downloadBtn2.style.display = 'none';
             }
             
+            if (movie.downloadLinks[2]) {
+                downloadBtn3.style.display = 'flex';
+                downloadBtn3.onclick = () => window.open(movie.downloadLinks[2], '_blank');
+            } else {
+                downloadBtn3.style.display = 'none';
+            }
+            
             // Set watch functionality
             watchBtn.onclick = () => {
-                playMovie(movie);
+                watchIframe.src = movie.watchLink;
+                watchBox.style.display = 'block';
             };
             
             watchBox.style.display = 'none';
@@ -940,64 +923,13 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // Play movie function
-        function playMovie(movie) {
-            const watchBox = document.getElementById('watch-box');
-            const watchBtn = document.getElementById('watch-btn');
-            
-            // Show loading state
-            watchBox.style.display = 'block';
-            videoLoading.style.display = 'block';
-            videoPlayer.style.display = 'none';
-            
-            // Set video source
-            videoPlayer.src = movie.watchLink;
-            
-            // When video is loaded
-            videoPlayer.onloadeddata = function() {
-                videoLoading.style.display = 'none';
-                videoPlayer.style.display = 'block';
-                videoPlayer.play();
-                
-                // Update button text
-                watchBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-                watchBtn.onclick = () => pauseMovie();
-            };
-            
-            // Handle video errors
-            videoPlayer.onerror = function() {
-                videoLoading.innerHTML = 'Error loading video. Please try again later.';
-            };
-        }
-
-        // Pause movie function
-        function pauseMovie() {
-            const watchBtn = document.getElementById('watch-btn');
-            
-            if (videoPlayer.paused) {
-                videoPlayer.play();
-                watchBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-                watchBtn.onclick = () => pauseMovie();
-            } else {
-                videoPlayer.pause();
-                watchBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
-                watchBtn.onclick = () => pauseMovie();
-            }
-        }
-
         // Close modal
         function closeModal() {
             const watchBox = document.getElementById('watch-box');
-            const watchBtn = document.getElementById('watch-btn');
+            const watchIframe = document.getElementById('watch-iframe');
             
-            // Reset video player
-            videoPlayer.pause();
-            videoPlayer.src = '';
             watchBox.style.display = 'none';
-            
-            // Reset watch button
-            watchBtn.innerHTML = '<i class="fas fa-play"></i> Watch Online';
-            watchBtn.onclick = () => playMovie(currentMovie);
+            watchIframe.src = '';
             
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
@@ -1029,7 +961,7 @@
 
         // Open request movie link
         function openRequestMovie() {
-            window.open('https://forms.gle/example', '_blank');
+            window.open('https://wa.me/+94788364308?text=ᴍᴏᴠɪᴇ_ɴᴀᴍᴇ_▷', '_blank');
         }
 
         // Event listeners
