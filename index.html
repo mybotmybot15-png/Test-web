@@ -470,6 +470,35 @@
             border-radius: 8px;
         }
 
+        /* Video player styling */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Loading indicator */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+        }
+
         /* Footer */
         footer {
             background: var(--footer-bg);
@@ -569,7 +598,7 @@
                 flex-direction: column;
             }
             
-            .watch-iframe {
+            .watch-iframe, .video-container {
                 height: 250px;
             }
         }
@@ -660,10 +689,13 @@
                 
                 <div class="modal-actions">
                     <button class="action-btn download-btn" id="download-btn-1">
-                        <i class="fas fa-download"></i> Download 1
+                        <i class="fas fa-download"></i> 720P
                     </button>
                     <button class="action-btn download-btn" id="download-btn-2">
-                        <i class="fas fa-download"></i> Download 2
+                        <i class="fas fa-download"></i> 1080P
+                    </button>
+                    <button class="action-btn download-btn" id="download-btn-2">
+                        <i class="fas fa-download"></i> 480P
                     </button>
                     <button class="action-btn watch-btn" id="watch-btn">
                         <i class="fas fa-play"></i> Watch Online
@@ -672,7 +704,10 @@
                 
                 <div class="watch-box" id="watch-box" style="display: none;">
                     <h3 class="watch-title">Watch Online</h3>
-                    <iframe src="" class="watch-iframe" id="watch-iframe" allowfullscreen></iframe>
+                    <div class="video-container" id="video-container">
+                        <div class="loading" id="video-loading">Loading video...</div>
+                        <video class="video-player" id="video-player" controls></video>
+                    </div>
                 </div>
             </div>
         </div>
@@ -719,7 +754,7 @@
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/RFinNxS5KN4"
+                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             },
             {
                 id: 3,
@@ -735,7 +770,7 @@
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
+                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
             },
             {
                 id: 4,
@@ -751,7 +786,7 @@
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/EXeTwQWrcwY"
+                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
             },
             {
                 id: 5,
@@ -767,7 +802,7 @@
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/YoHD9XEInc0"
+                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
             },
             {
                 id: 6,
@@ -783,7 +818,7 @@
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/TcMBFSGVi1c"
+                watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
             }
         ];
 
@@ -800,10 +835,13 @@
         const mediaItem = document.getElementById('media-item');
         const socialButtons = document.getElementById('social-buttons');
         const requestMovie = document.getElementById('request-movie');
+        const videoPlayer = document.getElementById('video-player');
+        const videoLoading = document.getElementById('video-loading');
 
         // Current category state
         let currentCategory = 'all';
         let filteredMovies = [...movies];
+        let currentMovie = null;
 
         // Initialize
         function initialize() {
@@ -864,6 +902,7 @@
 
         // Open movie modal
         function openMovieModal(movie) {
+            currentMovie = movie;
             const modalPoster = document.getElementById('modal-poster');
             const modalTitle = document.getElementById('modal-title');
             const modalInfo = document.getElementById('modal-info');
@@ -872,7 +911,6 @@
             const downloadBtn2 = document.getElementById('download-btn-2');
             const watchBtn = document.getElementById('watch-btn');
             const watchBox = document.getElementById('watch-box');
-            const watchIframe = document.getElementById('watch-iframe');
             
             modalPoster.src = movie.poster;
             modalTitle.textContent = movie.title;
@@ -896,8 +934,7 @@
             
             // Set watch functionality
             watchBtn.onclick = () => {
-                watchIframe.src = movie.watchLink;
-                watchBox.style.display = 'block';
+                playMovie(movie);
             };
             
             watchBox.style.display = 'none';
@@ -906,13 +943,64 @@
             document.body.style.overflow = 'hidden';
         }
 
+        // Play movie function
+        function playMovie(movie) {
+            const watchBox = document.getElementById('watch-box');
+            const watchBtn = document.getElementById('watch-btn');
+            
+            // Show loading state
+            watchBox.style.display = 'block';
+            videoLoading.style.display = 'block';
+            videoPlayer.style.display = 'none';
+            
+            // Set video source
+            videoPlayer.src = movie.watchLink;
+            
+            // When video is loaded
+            videoPlayer.onloadeddata = function() {
+                videoLoading.style.display = 'none';
+                videoPlayer.style.display = 'block';
+                videoPlayer.play();
+                
+                // Update button text
+                watchBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                watchBtn.onclick = () => pauseMovie();
+            };
+            
+            // Handle video errors
+            videoPlayer.onerror = function() {
+                videoLoading.innerHTML = 'Error loading video. Please try again later.';
+            };
+        }
+
+        // Pause movie function
+        function pauseMovie() {
+            const watchBtn = document.getElementById('watch-btn');
+            
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                watchBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                watchBtn.onclick = () => pauseMovie();
+            } else {
+                videoPlayer.pause();
+                watchBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                watchBtn.onclick = () => pauseMovie();
+            }
+        }
+
         // Close modal
         function closeModal() {
             const watchBox = document.getElementById('watch-box');
-            const watchIframe = document.getElementById('watch-iframe');
+            const watchBtn = document.getElementById('watch-btn');
             
+            // Reset video player
+            videoPlayer.pause();
+            videoPlayer.src = '';
             watchBox.style.display = 'none';
-            watchIframe.src = '';
+            
+            // Reset watch button
+            watchBtn.innerHTML = '<i class="fas fa-play"></i> Watch Online';
+            watchBtn.onclick = () => playMovie(currentMovie);
             
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
