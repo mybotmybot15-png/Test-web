@@ -177,7 +177,7 @@
         /* Movies Grid */
         .movies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 25px;
             margin: 30px 0;
         }
@@ -197,17 +197,34 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .movie-poster {
+        /* Movie poster with 16:9 aspect ratio */
+        .poster-container {
+            position: relative;
             width: 100%;
-            height: 280px;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (9 / 16 = 0.5625) */
+            overflow: hidden;
+        }
+
+        .movie-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
         .movie-title {
-            padding: 15px;
+            padding: 15px 10px;
             font-weight: 600;
             text-align: center;
             color: var(--text-color);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            line-height: 1.3;
         }
 
         /* Side Menu */
@@ -367,9 +384,20 @@
             z-index: 1;
         }
 
-        .modal-poster {
+        /* Modal poster with 16:9 aspect ratio */
+        .modal-poster-container {
+            position: relative;
             width: 100%;
-            height: 300px;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+        }
+
+        .modal-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -523,8 +551,14 @@
             }
             
             .movies-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
                 gap: 15px;
+            }
+            
+            .movie-title {
+                font-size: 12px;
+                padding: 10px 5px;
+                height: 50px;
             }
             
             .modal-content {
@@ -610,7 +644,9 @@
                 <div class="modal-close">
                     <i class="fas fa-times"></i>
                 </div>
-                <img src="" alt="Movie Poster" class="modal-poster" id="modal-poster">
+                <div class="modal-poster-container">
+                    <img src="" alt="Movie Poster" class="modal-poster" id="modal-poster">
+                </div>
             </div>
             <div class="modal-body">
                 <h2 class="modal-title" id="modal-title">Movie Title</h2>
@@ -647,7 +683,7 @@
         <div class="container footer-content">
             <div class="footer-logo">AK <span>CREATIONS</span></div>
             <p>Your ultimate destination for movies</p>
-            <p class="copyright">© 2023 AK Creations. All rights reserved.</p>
+            <p class="copyright">© 2025 AK Creations. All rights reserved.</p>
         </div>
     </footer>
 
@@ -702,21 +738,53 @@
                 watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
             },
             {
-                id: 3,
-                title: "Mad Max: Fury Road",
-                year: 2015,
+                id: 4,
+                title: "The Dark Knight",
+                year: 2008,
+                genre: "Action, Crime, Drama",
+                duration: "2h 32m",
+                rating: "9.0/10",
+                poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+                category: "sinhala-sub",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/EXeTwQWrcwY"
+            },
+            {
+                id: 5,
+                title: "Inception",
+                year: 2010,
                 genre: "Action, Adventure, Sci-Fi",
-                duration: "2h",
-                rating: "8.1/10",
-                poster: "https://images.unsplash.com/photo-1585951236318-7bdb3e0a7c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                description: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
+                duration: "2h 28m",
+                rating: "8.8/10",
+                poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
                 category: "no-sub",
                 downloadLinks: [
                     "https://example.com/download1",
                     "https://example.com/download2"
                 ],
-                watchLink: "https://www.youtube.com/embed/hEJnMQG9ev8"
-        }
+                watchLink: "https://www.youtube.com/embed/YoHD9XEInc0"
+            },
+            {
+                id: 6,
+                title: "Avengers: Endgame",
+                year: 2019,
+                genre: "Action, Adventure, Drama",
+                duration: "3h 1m",
+                rating: "8.4/10",
+                poster: "https://images.unsplash.com/photo-1635863138275-d9b33299680a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+                category: "sinhala-dubbed",
+                downloadLinks: [
+                    "https://example.com/download1",
+                    "https://example.com/download2"
+                ],
+                watchLink: "https://www.youtube.com/embed/TcMBFSGVi1c"
+            }
         ];
 
         // DOM Elements
@@ -763,7 +831,9 @@
                 const movieCard = document.createElement('div');
                 movieCard.classList.add('movie-card');
                 movieCard.innerHTML = `
-                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                    <div class="poster-container">
+                        <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                    </div>
                     <div class="movie-title">${movie.title}</div>
                 `;
                 movieCard.addEventListener('click', () => openMovieModal(movie));
@@ -916,4 +986,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
