@@ -659,10 +659,10 @@
             <p id="details-description"></p>
             <div class="details-actions">
                 <a href="" target="_blank" class="action-btn download-btn" id="download-btn-1">
-                    <i class="fas fa-download"></i> 1080P
+                    <i class="fas fa-download"></i> <span id="download-text-1">1080P</span>
                 </a>
                 <a href="" target="_blank" class="action-btn download-btn" id="download-btn-2">
-                    <i class="fas fa-download"></i> 720P
+                    <i class="fas fa-download"></i> <span id="download-text-2">720P</span>
                 </a>
                 <button class="action-btn watch-btn" id="watch-btn">
                     <i class="fas fa-play"></i> Online Watch
@@ -700,7 +700,7 @@
                 description: "Sonic the Hedgehog බලපු හැමෝම බලාගෙන හිටියේ ඒකේ දෙවෙනි කොටස එනකල් සුපුරුදු පරිදිම ලොකු ප්‍රේක්ෂක ආකර්ෂණයක් දිනාගන්න මේ චිත්‍රපටිය නිකුත් කරන්න කලින්ම පුළුවන් වුනා. ඒක තවත් වැඩි වුනා. මේක නරඹන්න පටන් ගත්තාම. ලෝකේ පුරාම මේ වෙනකොට ප්‍රදර්ශනය ආරම්භ කරලා මාසයක් විතර වුනත්. ආදායම ඩොලර් මිලියන 350කට ආසන්නයි කියලායි සඳහන් වෙන්නේ. රේටිං අතින් ගත්තාමත්, මේ ලිපිය ලියන කොට, IMDB 6.7, Rotten Tomatoes 68%, Metacritic 45%, Google Users 96% ලබාගෙන තිබ්බා.",
                 category: "sinhala-dubbed",
                 downloadLinks: [
-                    "https://cloud.sinhalachr.workers.dev/14:/Sonic_the_Hedgehog_2_2022_1080p_WEBRip_pupilvideo_blogspot_com.mp4"
+                    { text: "1080P", url: "https://cloud.sinhalachr.workers.dev/14:/Sonic_the_Hedgehog_2_2022_1080p_WEBRip_pupilvideo_blogspot_com.mp4" }
                 ],
                 watchLink: "https://cloud.sinhalachr.workers.dev/14:/Sonic_the_Hedgehog_2_2022_1080p_WEBRip_pupilvideo_blogspot_com.mp4"
             },
@@ -715,7 +715,7 @@
                 description: "2005 දී මාර්වල් ස්ටුඩියෝව නිර්මාණය කල විට Avi Arad ගේ තනතුරේ උප තනතුර හෙවත් මාර්වල් සිනමා අංශයේ උප අංශ ප්‍රධානි තනතුර දැරූ Kewin Feige ඔහුගේ අදහසක් ඉදිරිපත් කරනවා. ඔහු ඉදිරිපත් කල අදහස වූයේ ඔවුනේ ජනප්‍රියම චරිත කිහිපයක්ම වෙනත් ආයතන වලට ලබා දී තිබුනද Marvel Comic හි ප්‍රධානතම කණ්ඩායමක් වන Avenger චරිත මාර්වල් ස්ටුඩියෝව වෙත යොදාගත හැකි බව. ඇවෙන්ජර් හි තනි තනි චරිත වල සිනමා පට නිර්මාණය කර පසුව සියල්ලන් එක් කර සමූහ වීර සිනමාපටයක් නිර්මාණයට ඔහු අදහසක් ඉරිදිපත් කරනවා. ඔහුගේ අදහසට තවත් ප්‍රධාන හේතුවක් වූයේ වෙනත් ආයතන වලට විකුණා තිබූ ඇවෙන්ජර් චරිතනැවත මාර්වල් වෙත ලැබී තිබූ නිසාය.",
                 category: "sinhala-dubbed",
                 downloadLinks: [
-                    "https://cloud.sinhalachr.workers.dev/12:/Avengers_Infinity_War_2018_720p_@sinhalafilmsgo.mkv",
+                    { text: "720P", url: "https://cloud.sinhalachr.workers.dev/12:/Avengers_Infinity_War_2018_720p_@sinhalafilmsgo.mkv" },
                 ],
                 watchLink: "https://cloud.sinhalachr.workers.dev/12:/Avengers_Infinity_War_2018_720p_@sinhalafilmsgo.mkv"
             },
@@ -730,8 +730,8 @@
                 description: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
                 category: "no-sub",
                 downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
+                    { text: "1080P", url: "https://example.com/download1" },
+                    { text: "720P", url: "https://example.com/download2" }
                 ],
                 watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
             },
@@ -746,8 +746,7 @@
                 description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
                 category: "sinhala-sub",
                 downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
+                    { text: "Download HD", url: "https://example.com/download1" }
                 ],
                 watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
             },
@@ -762,8 +761,7 @@
                 description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
                 category: "no-sub",
                 downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
+                    { text: "Full Movie", url: "https://example.com/download1" },
                 ],
                 watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
             },
@@ -778,8 +776,7 @@
                 description: "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
                 category: "sinhala-dubbed",
                 downloadLinks: [
-                    "https://example.com/download1",
-                    "https://example.com/download2"
+                    { text: "HD", url: "https://example.com/download1" }
                 ],
                 watchLink: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
             }
@@ -807,6 +804,8 @@
         const detailsDescription = document.getElementById('details-description');
         const downloadBtn1 = document.getElementById('download-btn-1');
         const downloadBtn2 = document.getElementById('download-btn-2');
+        const downloadText1 = document.getElementById('download-text-1');
+        const downloadText2 = document.getElementById('download-text-2');
         const watchBtn = document.getElementById('watch-btn');
         const watchBox = document.getElementById('watch-box');
         const videoPlayer = document.getElementById('video-player');
@@ -876,11 +875,19 @@
             detailsRating.textContent = `Rating: ${movie.rating}`;
             detailsDescription.textContent = movie.description;
 
-            // Set download links
-            downloadBtn1.href = movie.downloadLinks[0];
-            if (movie.downloadLinks[1]) {
+            // Set download links dynamically
+            if (movie.downloadLinks && movie.downloadLinks.length > 0) {
+                downloadBtn1.style.display = 'flex';
+                downloadText1.textContent = movie.downloadLinks[0].text;
+                downloadBtn1.href = movie.downloadLinks[0].url;
+            } else {
+                downloadBtn1.style.display = 'none';
+            }
+
+            if (movie.downloadLinks && movie.downloadLinks.length > 1) {
                 downloadBtn2.style.display = 'flex';
-                downloadBtn2.href = movie.downloadLinks[1];
+                downloadText2.textContent = movie.downloadLinks[1].text;
+                downloadBtn2.href = movie.downloadLinks[1].url;
             } else {
                 downloadBtn2.style.display = 'none';
             }
