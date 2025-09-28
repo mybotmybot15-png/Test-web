@@ -331,6 +331,12 @@
             cursor: pointer;
             font-size: 14px;
             line-height: 1; /* Fix height issue */
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .delete-btn:hover, .edit-btn:hover {
+            opacity: 1;
         }
         
         .edit-btn {
@@ -757,7 +763,7 @@
     </style>
 </head>
 <body>
-    <div class="add-movie-btn" id="add-movie-btn" style="display: none;">
+    <div class="add-movie-btn" id="add-movie-btn">
         <i class="fas fa-plus"></i>
     </div>
 
@@ -907,8 +913,8 @@
                     <option value="no-sub">WITHOUT SUB</option>
                 </select>
                 
-                <label for="movie-watchlink">Watch Link (Video Source URL)</label>
-                <input type="url" id="movie-watchlink" placeholder="Direct video URL or embed link" required>
+                <label for="movie-watchlink">Watch Link (Direct Video Source URL)</label>
+                <input type="url" id="movie-watchlink" placeholder="Direct video URL (.mp4, .mkv, etc.)" required>
                 
                 <label for="movie-description">Description</label>
                 <textarea id="movie-description" rows="5" placeholder="A brief summary of the movie..." required></textarea>
@@ -947,7 +953,7 @@
         let currentCategory = 'all';
         let isAdmin = false;
         // ADMIN PASSWORD - NOTE: Change this or use proper Firebase Authentication!
-        const ADMIN_PASSWORD = 'ak@1234@creation'; 
+        const ADMIN_PASSWORD = 'ak@1234@creation'; // 🔒 මාරු කරන්න!
         
         // --- DOM ELEMENTS ---
         const moviesGrid = document.getElementById('movies-grid');
@@ -996,10 +1002,12 @@
 
         // --- FIREBASE FUNCTIONS ---
 
+        // Load movies and listen for real-time updates (Optional: can use snapshot.onSnapshot for real-time)
         async function loadMoviesFromFirestore() {
             moviesGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: white; font-size: 18px;">Loading movies from Database...</p>';
             
             try {
+                // Get all documents from the movies collection
                 const snapshot = await db.collection(MOVIES_COLLECTION).get();
                 
                 allMovies = snapshot.docs.map(doc => {
@@ -1016,10 +1024,12 @@
                         description: data.description || 'No description available.',
                         category: data.category || 'no-sub',
                         watchLink: data.watchLink || '#',
+                        // Ensure downloadLinks is an array of {text, url} objects
                         downloadLinks: Array.isArray(data.downloadLinks) ? data.downloadLinks : [] 
                     };
                 });
                 
+                // Sort by year descending (latest first)
                 allMovies.sort((a, b) => b.year - a.year);
 
                 filteredMovies = filterMoviesByCategory(currentCategory);
@@ -1039,7 +1049,7 @@
             try {
                 await db.collection(MOVIES_COLLECTION).doc(movieId).delete();
                 alert('Movie deleted successfully!');
-                loadMoviesFromFirestore(); 
+                loadMoviesFromFirestore(); // Reload movies after delete
             } catch (error) {
                 console.error('Error deleting movie:', error);
                 alert('Error deleting movie. Check console for details.');
@@ -1048,11 +1058,12 @@
         
         async function addNewMovie(movieData) {
             try {
+                // Add new document to the collection
                 await db.collection(MOVIES_COLLECTION).add(movieData); 
                 alert('Movie added successfully!');
                 addMovieModal.style.display = 'none'; 
                 addMovieForm.reset(); 
-                loadMoviesFromFirestore(); 
+                loadMoviesFromFirestore(); // Reload movies after add
             } catch (error) {
                 console.error('Error adding movie:', error);
                 alert('Error adding movie. Check console for details.');
@@ -1061,11 +1072,12 @@
 
         async function updateMovie(movieId, movieData) {
             try {
+                // Update specific document
                 await db.collection(MOVIES_COLLECTION).doc(movieId).update(movieData);
                 alert('Movie updated successfully!');
                 addMovieModal.style.display = 'none'; 
                 addMovieForm.reset(); 
-                loadMoviesFromFirestore(); 
+                loadMoviesFromFirestore(); // Reload movies after update
             } catch (error) {
                 console.error('Error updating movie:', error);
                 alert('Error updating movie. Check console for details.');
@@ -1097,32 +1109,35 @@
                             <button class="delete-btn" data-movie-id="${movie.id}" title="Delete Movie">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <button class="edit-btn" data-movie-id="${movie.id}" title="Edit Movie" style="background-color: #3498db;">
+                            <button class="edit-btn" data-movie-id="${movie.id}" title="Edit Movie">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </div>
                     ` : ''}
                 `;
                 
+                // Event listener for showing details
                 movieCard.addEventListener('click', (e) => {
+                    // Prevent showing details if an admin control button is clicked
                     if (e.target.closest('.delete-btn') || e.target.closest('.edit-btn')) return; 
                     
                     const movieId = e.currentTarget.dataset.movieId;
                     showMovieDetails(movieId);
                 });
                 
+                // Event listeners for admin controls (only if admin mode is active)
                 if (isAdmin) {
                     const deleteBtn = movieCard.querySelector('.delete-btn');
                     if (deleteBtn) {
                         deleteBtn.addEventListener('click', (e) => {
-                            e.stopPropagation(); 
+                            e.stopPropagation(); // Stop click from propagating to the card
                             deleteMovie(e.currentTarget.dataset.movieId);
                         });
                     }
                     const editBtn = movieCard.querySelector('.edit-btn');
                     if (editBtn) {
                         editBtn.addEventListener('click', (e) => {
-                            e.stopPropagation(); 
+                            e.stopPropagation(); // Stop click from propagating to the card
                             openAddEditModal(e.currentTarget.dataset.movieId); 
                         });
                     }
@@ -1134,7 +1149,7 @@
         
         function openAddEditModal(movieIdToEdit = null) {
             addMovieForm.reset();
-            movieIdEditInput.value = ''; 
+            movieIdEditInput.value = ''; // Clear ID for Add mode
 
             if (movieIdToEdit) {
                 // EDIT MODE
@@ -1144,6 +1159,7 @@
                 addModalTitle.textContent = 'Edit Movie: ' + movie.title;
                 submitMovieBtn.textContent = 'Update Movie';
                 
+                // Populate form fields
                 movieIdEditInput.value = movie.id;
                 movieTitleInput.value = movie.title;
                 movieYearInput.value = movie.year;
@@ -1155,6 +1171,7 @@
                 movieWatchlinkInput.value = movie.watchLink;
                 movieDescriptionInput.value = movie.description;
                 
+                // Populate download links textarea
                 const linksText = movie.downloadLinks.map(link => `${link.text}|${link.url}`).join('\n');
                 movieDownloadLinksInput.value = linksText;
             } else {
@@ -1168,7 +1185,8 @@
 
         function getMovieDataFromForm() {
             const title = movieTitleInput.value;
-            const year = parseInt(movieYearInput.value);
+            // Parse year to integer for proper sorting/storage
+            const year = parseInt(movieYearInput.value); 
             const genre = movieGenreInput.value;
             const duration = movieDurationInput.value;
             const rating = movieRatingInput.value;
@@ -1188,7 +1206,7 @@
                     };
                 }
                 return null;
-            }).filter(link => link !== null); 
+            }).filter(link => link !== null); // Filter out invalid lines
 
             return {
                 title, year, genre, duration, rating, poster, 
@@ -1214,7 +1232,7 @@
             const downloadText1 = document.getElementById('download-text-1');
             const downloadText2 = document.getElementById('download-text-2');
 
-            // Link 1
+            // Link 1 (e.g., 1080P)
             if (links && links.length > 0) {
                 downloadBtn1.style.display = 'flex';
                 downloadText1.textContent = links[0].text;
@@ -1223,7 +1241,7 @@
                 downloadBtn1.style.display = 'none';
             }
 
-            // Link 2
+            // Link 2 (e.g., 720P)
             if (links && links.length > 1) {
                 downloadBtn2.style.display = 'flex';
                 downloadText2.textContent = links[1].text;
@@ -1232,9 +1250,11 @@
                 downloadBtn2.style.display = 'none';
             }
             
+            // Reset and hide watch box initially
             watchBox.classList.add('hidden');
             videoPlayer.src = '';
 
+            // Set up watch button click handler
             watchBtn.onclick = () => {
                 playMovie(movie.watchLink);
             };
@@ -1250,12 +1270,19 @@
         }
 
         function playMovie(watchLink) {
+            if (!watchLink || watchLink === '#') {
+                alert('Online watch link is not available for this movie.');
+                return;
+            }
+            
             watchBox.classList.remove('hidden');
             videoLoading.style.display = 'block';
             videoPlayer.style.display = 'none';
             
+            // Set video source
             videoPlayer.src = watchLink;
             
+            // Event listeners for video loading status
             videoPlayer.onloadeddata = function() {
                 videoLoading.style.display = 'none';
                 videoPlayer.style.display = 'block';
@@ -1263,7 +1290,8 @@
             };
             
             videoPlayer.onerror = function() {
-                videoLoading.innerHTML = 'Error loading video. Please try again later.';
+                videoLoading.innerHTML = 'Error loading video. Please check the video source URL.';
+                videoPlayer.style.display = 'none';
             };
         }
         
@@ -1276,17 +1304,21 @@
         }
 
         function filterMoviesBySearch(term) {
+            // Apply category filter first
+            let moviesToSearch = currentCategory === 'all' ? allMovies : allMovies.filter(movie => movie.category === currentCategory);
+
             if (!term) {
-                return filterMoviesByCategory(currentCategory);
+                return moviesToSearch;
             }
             
-            const filteredBySearch = allMovies.filter(movie => 
-                movie.title.toLowerCase().includes(term.toLowerCase()) || 
-                movie.description.toLowerCase().includes(term.toLowerCase()) ||
-                movie.genre.toLowerCase().includes(term.toLowerCase())
+            const lowerCaseTerm = term.toLowerCase();
+            return moviesToSearch.filter(movie => 
+                movie.title.toLowerCase().includes(lowerCaseTerm) || 
+                movie.description.toLowerCase().includes(lowerCaseTerm) ||
+                movie.genre.toLowerCase().includes(lowerCaseTerm)
             );
-            return filteredBySearch.filter(movie => currentCategory === 'all' || movie.category === currentCategory);
         }
+
 
         function toggleSideMenu() {
             sideMenu.classList.toggle('active');
@@ -1305,7 +1337,8 @@
         }
 
         function toggleSocialButtons() {
-            document.getElementById('social-buttons').style.display = document.getElementById('social-buttons').style.display === 'flex' ? 'none' : 'flex';
+            const socialButtons = document.getElementById('social-buttons');
+            socialButtons.style.display = socialButtons.style.display === 'flex' ? 'none' : 'flex';
         }
 
         function openRequestMovie() {
@@ -1325,18 +1358,21 @@
                 adminAuthBtn.innerHTML = '<i class="fas fa-user-lock"></i> Admin Login';
                 adminAuthBtn.classList.remove('admin-logout');
             }
+            // Regenerate cards to show/hide admin controls
             generateMovieCards(filteredMovies); 
         }
         
         function handleAdminAuth() {
             if (isAdmin) {
+                // Logout flow
                 if (confirm('Are you sure you want to log out of Admin Mode?')) {
                     updateAdminMode(false);
                     alert('Logged out successfully.');
                 }
             } else {
+                // Login flow
                 loginModal.style.display = 'block';
-                sideMenu.classList.remove('active'); 
+                sideMenu.classList.remove('active'); // Close side menu on modal open
             }
         }
         
@@ -1367,13 +1403,25 @@
         
         // Open Add Movie Modal 
         addMovieBtn.addEventListener('click', () => {
-            openAddEditModal(null); 
+            openAddEditModal(null); // Open in Add mode
         });
         
         // Close Add Movie Modal
         closeAddModal.addEventListener('click', () => {
             addMovieModal.style.display = 'none';
         });
+        
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
+                loginMessage.textContent = '';
+                adminPasswordInput.value = '';
+            }
+            if (event.target == addMovieModal) {
+                addMovieModal.style.display = "none";
+            }
+        }
 
         // Handle Add/Edit Movie Form Submission
         addMovieForm.addEventListener('submit', async (e) => {
@@ -1418,6 +1466,12 @@
                 
                 const category = tab.getAttribute('data-category');
                 filteredMovies = filterMoviesByCategory(category);
+                // Also apply search if there is a term
+                const searchTerm = searchBox.value;
+                if (searchTerm) {
+                    filteredMovies = filterMoviesBySearch(searchTerm);
+                }
+                
                 generateMovieCards(filteredMovies);
                 hideMovieDetails(); 
             });
